@@ -35,6 +35,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.5.0")
     implementation("androidx.lifecycle:lifecycle-livedata:2.5.0")
     implementation("androidx.lifecycle:lifecycle-runtime:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.5.0")
     implementation("androidx.databinding:databinding-runtime:7.2.0")
 
     implementation(libs.appcompat)
