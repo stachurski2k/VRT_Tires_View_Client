@@ -14,9 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
 public class MainViewActivity extends AppCompatActivity {
 
     private final ImageServiceConnection imageServiceConnection = new ImageServiceConnection();
@@ -26,6 +23,12 @@ public class MainViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_view_activity);
+        imageView = findViewById(R.id.imageView);
+
+        if (imageView == null) {
+            Log.e("MainViewActivity", "imageView is null!");
+        }
     }
 
     @Override
@@ -33,7 +36,6 @@ public class MainViewActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, ImageBoundedService.class);
         boolean success = bindService(intent, imageServiceConnection, Context.BIND_AUTO_CREATE);
-        imageView = findViewById(R.id.imageView);
     }
 
     private class ImageServiceConnection implements ServiceConnection {
@@ -46,20 +48,28 @@ public class MainViewActivity extends AppCompatActivity {
             Log.d("MainViewActivity", "Service Connected");
             imageService.downloadImage()
                     .thenAcceptAsync(size -> {
-                        Log.d("MainViewActivity", "Downloaded image size: " + size);
-                        runOnUiThread(() -> {
-                            Log.d("MainViewActivity", Arrays.toString(imageService.getCachedImageData()));
-                            Drawable drawable = imageService.getImageAsDrawable(getApplicationContext());
-                            if(drawable == null) {
-                                Log.e("MainViewActivity", "Drawable is null!");
-                                return;
-                            }
-                            imageView.setImageDrawable(drawable);
-                        });
+                        if (size == -1) {
+                            Log.e("MainViewActivity", "Failed to load image. Size is -1");
+                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to load image", Toast.LENGTH_SHORT).show());
+                        } else {
+                            Log.d("MainViewActivity", "Image loaded successfully: " + size + " bytes");
+                            runOnUiThread(() -> {
+                                Toast.makeText(getApplicationContext(), "Image loaded: " + size + " bytes", Toast.LENGTH_SHORT).show();
+                                Drawable drawable = imageService.getImageAsDrawable(MainViewActivity.this);
+                                if (drawable != null) {
+                                    imageView.setImageDrawable(drawable);
+                                } else {
+                                    Log.e("MainViewActivity", "Drawable is null.");
+                                }
+                            });
+                        }
                     })
                     .exceptionally(throwable -> {
-                        throw new RuntimeException("FAILED TO LOAD IMAGE: " + throwable.getMessage());
+                        Log.e("MainViewActivity", "Error during image download", throwable);
+                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Error loading image: " + throwable.getMessage(), Toast.LENGTH_SHORT).show());
+                        return null;
                     });
+
         }
 
         @Override

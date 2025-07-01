@@ -84,7 +84,7 @@ public class ImageBoundedService extends Service {
 
     @Nullable
     public Drawable getImageAsDrawable(@NonNull Context context) {
-        return byteArrayToDrawable(null, context);
+        return byteArrayToDrawable(cachedImageData, context);
     }
 
     @Nullable
