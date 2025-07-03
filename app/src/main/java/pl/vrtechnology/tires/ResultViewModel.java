@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 public class ResultViewModel extends ViewModel {
 
@@ -38,5 +39,22 @@ public class ResultViewModel extends ViewModel {
                     isLoading.postValue(false);
                     return null;
                 });
+    }
+
+    public static class Factory implements ViewModelProvider.Factory {
+        private final ImageRepository imageRepository;
+
+        public Factory(ImageRepository imageRepository) {
+            this.imageRepository = imageRepository;
+        }
+
+        @NonNull
+        @Override
+        public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+            if (modelClass.isAssignableFrom(ResultViewModel.class)) {
+                return (T) new ResultViewModel(imageRepository);
+            }
+            throw new IllegalArgumentException("Unknown ViewModel class");
+        }
     }
 }

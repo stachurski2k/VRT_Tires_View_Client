@@ -21,14 +21,16 @@ public class ResultFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.result_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+        /*MainViewActivity activity = (MainViewActivity) requireActivity();
+        ImageRepository imageRepository = new ImageRepository(activity.getImageService());
+        viewModel = new ViewModelProvider(this, new ResultViewModel.Factory(imageRepository)).get(ResultViewModel.class);
 
         ImageView resultImageView = requireView().findViewById(R.id.result_image_view);
 
@@ -36,6 +38,6 @@ public class ResultFragment extends Fragment {
             if (drawable != null) {
                 resultImageView.setImageDrawable(drawable);
             }
-        });
+        });*/
     }
 }

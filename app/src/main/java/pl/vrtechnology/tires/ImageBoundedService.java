@@ -1,7 +1,7 @@
 package pl.vrtechnology.tires;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -41,6 +41,7 @@ public class ImageBoundedService extends Service {
     private byte[] cachedImageData = null;
 
     public ImageBoundedService() {
+        Log.d("ImageBoundedService", "ImageBoundedService: SERWIS TWOPRZONOWYYYYY 111111111111");
         this.updateListener = new UpdateListener(this);
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
@@ -52,6 +53,7 @@ public class ImageBoundedService extends Service {
                 .build();
 
         connectUpdateChannel();
+        Log.d("ImageBoundedService", "ImageBoundedService: SERWIS TWOPRZONOWYYYYY 222222222222222");
     }
 
     public void connectUpdateChannel() {
@@ -128,7 +130,7 @@ public class ImageBoundedService extends Service {
     }
 
     private void sendImageLoadedBroadcast() {
-        Intent intent = new Intent("com.vrtechnology.IMAGE_LOADED");
+        @SuppressLint("UnsafeImplicitIntentLaunch") Intent intent = new Intent("com.vrtechnology.IMAGE_LOADED");
         Log.d("ImageBoundedService", "INTENT");
         sendBroadcast(intent);
     }

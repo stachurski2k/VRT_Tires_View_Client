@@ -10,6 +10,6 @@ public class TiresApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationLifecycleObserver());
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new ApplicationLifecycleObserver(this));
     }
 }
