@@ -2,6 +2,7 @@ package pl.vrtechnology.tires;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -59,18 +60,29 @@ public class Ustawienia extends Fragment {
                             int_port = Integer.parseInt(port.getText().toString());
                             textView_koncowe.setText(string_ip+" : "+int_port);
 
-                            new AlertDialog.Builder(requireContext())
+
+                            /*
+                             * Standardowy AlertDialog ustawia przyciski w stałej kolejności:
+                             * - Pozytywny przycisk (PositiveButton) jest zawsze po prawej stronie,
+                             * - Negatywny przycisk (NegativeButton) jest zawsze po lewej stronie.
+                             *
+                             * Zamieniłem miejscsami żeby tak było z lewej
+                             */
+                            AlertDialog alertDialog = new AlertDialog.Builder(requireContext())
                                     .setTitle("Potwierdź wybór")
                                     .setMessage("Czy chcesz kontynuować?")
-                                    .setPositiveButton("Tak", (dialog, which) -> {
+                                    .setNegativeButton("Tak", (dialog, which) -> {
                                         Toast.makeText(requireContext(), "Kliknięto TAK", Toast.LENGTH_SHORT).show();
                                         // np. wywołanie metody, zmiana stanu, itd.
                                     })
-                                    .setNegativeButton("Nie", (dialog, which) -> {
+                                    .setPositiveButton("Nie", (dialog, which) -> {
                                         Toast.makeText(requireContext(), "Kliknięto NIE", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                     })
                                     .show();
+
+                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GREEN);
                         }
                         else{
                             textView_koncowe.setText("nie poprawny port lub adres ip");
