@@ -1,16 +1,23 @@
 [versions]
 agp = "8.10.1"
+databindingRuntime = "8.11.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.1"
+lifecycleLivedata = "2.9.1"
+lifecycleViewmodelJava = "2.5.0"
 material = "1.12.0"
 
 [libraries]
+databinding-runtime = { module = "androidx.databinding:databinding-runtime", version.ref = "databindingRuntime" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycleLivedata" }
+lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime", version.ref = "lifecycleLivedata" }
+lifecycle-viewmodel-java = { module = "androidx.lifecycle:lifecycle-viewmodel-java", version.ref = "lifecycleViewmodelJava" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
