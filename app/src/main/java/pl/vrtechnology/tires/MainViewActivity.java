@@ -15,11 +15,19 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainViewActivity extends AppCompatActivity {
 
     /*private final ImageServiceConnection imageServiceConnection = new ImageServiceConnection();
     private ImageBoundedService imageService;*/
 
+    public MainViewActivity() {
+        //
+    }
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
@@ -28,7 +36,7 @@ public class MainViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity); // Upewnij się że to jest TWÓJ layout
+        setContentView(R.layout.main_activity);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }

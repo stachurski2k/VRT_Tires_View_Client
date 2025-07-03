@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires;
+package pl.vrtechnology.tires.result;
 
 import android.os.Bundle;
 
@@ -12,9 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import dagger.hilt.android.AndroidEntryPoint;
+import pl.vrtechnology.tires.R;
+
+@AndroidEntryPoint
 public class ResultFragment extends Fragment {
 
     private ResultViewModel viewModel;
+    private ImageView resultView;
 
     public ResultFragment() {
         super(R.layout.result_fragment);
@@ -27,17 +32,13 @@ public class ResultFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        resultView = view.findViewById(R.id.result_image_view);
 
-        /*MainViewActivity activity = (MainViewActivity) requireActivity();
-        ImageRepository imageRepository = new ImageRepository(activity.getImageService());
-        viewModel = new ViewModelProvider(this, new ResultViewModel.Factory(imageRepository)).get(ResultViewModel.class);
-
-        ImageView resultImageView = requireView().findViewById(R.id.result_image_view);
-
-        viewModel.getImage().observe(getViewLifecycleOwner(), drawable -> {
-            if (drawable != null) {
-                resultImageView.setImageDrawable(drawable);
+        viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+        viewModel.getImage().observe(getViewLifecycleOwner(), bitmap -> {
+            if (bitmap != null) {
+                resultView.setImageDrawable(bitmap);
             }
-        });*/
+        });
     }
 }

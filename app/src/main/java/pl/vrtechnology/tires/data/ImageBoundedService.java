@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires;
+package pl.vrtechnology.tires.data;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -22,6 +22,8 @@ import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.sse.EventSources;
@@ -37,14 +39,16 @@ public class ImageBoundedService extends Service {
     private final OkHttpClient client;
     private final Request request;
 
-
+    @Inject
+    ImageRepository repository;
+    
     private byte[] cachedImageData = null;
 
     public ImageBoundedService() {
-        Log.d("ImageBoundedService", "ImageBoundedService: SERWIS TWOPRZONOWYYYYY 111111111111");
+        Log.d("ImageBoundedService", "ImageBoundedService: CONSTRUCTOR");
         this.updateListener = new UpdateListener(this);
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(0, TimeUnit.MINUTES)
                 .build();
 
@@ -53,7 +57,6 @@ public class ImageBoundedService extends Service {
                 .build();
 
         connectUpdateChannel();
-        Log.d("ImageBoundedService", "ImageBoundedService: SERWIS TWOPRZONOWYYYYY 222222222222222");
     }
 
     public void connectUpdateChannel() {

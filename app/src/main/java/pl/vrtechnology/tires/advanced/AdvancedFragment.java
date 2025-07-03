@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires;
+package pl.vrtechnology.tires.advanced;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
+
+import pl.vrtechnology.tires.R;
 
 public class AdvancedFragment extends Fragment {
     Slider slider_szerokosc, slider_srednica, slider_profil;

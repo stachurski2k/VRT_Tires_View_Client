@@ -4,6 +4,9 @@ import android.app.Application;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
 
+import dagger.hilt.android.HiltAndroidApp;
+
+@HiltAndroidApp
 public class TiresApplication extends Application {
 
     @Override

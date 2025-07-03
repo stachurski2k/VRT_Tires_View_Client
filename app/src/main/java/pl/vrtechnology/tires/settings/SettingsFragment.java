@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires;
+package pl.vrtechnology.tires.settings;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
+
+import pl.vrtechnology.tires.R;
 
 public class SettingsFragment extends Fragment {
 

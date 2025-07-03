@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import pl.vrtechnology.tires.advanced.AdvancedFragment;
+import pl.vrtechnology.tires.result.ResultFragment;
+import pl.vrtechnology.tires.settings.SettingsFragment;
+
 public class ViewPagerAdapter extends FragmentStateAdapter {
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
