@@ -79,6 +79,7 @@ public class Ustawienia extends Fragment {
                                         Toast.makeText(requireContext(), "Kliknięto NIE", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
                                     })
+
                                     .show();
 
                             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
