@@ -3,20 +3,21 @@ package pl.vrtechnology.tires;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainViewActivity extends AppCompatActivity {
+public class MainViewActivity extends AppCompatActivity implements ImageBroadcastReceiver.Listener {
 
     private final ImageServiceConnection imageServiceConnection = new ImageServiceConnection();
+    private ImageBroadcastReceiver imageLoadedReceiver;
     private ImageBoundedService imageService;
     private ImageView imageView;
 
@@ -25,17 +26,46 @@ public class MainViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_view_activity);
         imageView = findViewById(R.id.imageView);
-
-        if (imageView == null) {
-            Log.e("MainViewActivity", "imageView is null!");
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Intent intent = new Intent(this, ImageBoundedService.class);
-        boolean success = bindService(intent, imageServiceConnection, Context.BIND_AUTO_CREATE);
+        bindService(intent, imageServiceConnection, Context.BIND_AUTO_CREATE);
+
+        IntentFilter filter = new IntentFilter("com.vrtechnology.IMAGE_LOADED");
+        imageLoadedReceiver = new ImageBroadcastReceiver();
+        imageLoadedReceiver.setListener(this);
+        registerReceiver(imageLoadedReceiver, filter, Context.RECEIVER_EXPORTED);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(imageLoadedReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshImage();
+    }
+
+    @Override
+    public void onImageDownloaded(Context context, Intent intent) {
+        refreshImage();
+    }
+
+    private void refreshImage() {
+        if(imageService != null) {
+            Drawable drawable = imageService.getImageAsDrawable(getApplicationContext());
+            if(drawable == null) {
+                Log.d("MainViewActivity", "BRAK ZDJĘCIA, MOŻE JAKIŚ PLACEHOLDER?");
+            } else {
+                imageView.setImageDrawable(drawable);
+            }
+        }
     }
 
     private class ImageServiceConnection implements ServiceConnection {
@@ -44,37 +74,9 @@ public class MainViewActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             ImageBoundedService.LocalBinder binder = (ImageBoundedService.LocalBinder) service;
             imageService = binder.getService();
-
-            Log.d("MainViewActivity", "Service Connected");
-            imageService.downloadImage()
-                    .thenAcceptAsync(size -> {
-                        if (size == -1) {
-                            Log.e("MainViewActivity", "Failed to load image. Size is -1");
-                            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Failed to load image", Toast.LENGTH_SHORT).show());
-                        } else {
-                            Log.d("MainViewActivity", "Image loaded successfully: " + size + " bytes");
-                            runOnUiThread(() -> {
-                                Toast.makeText(getApplicationContext(), "Image loaded: " + size + " bytes", Toast.LENGTH_SHORT).show();
-                                Drawable drawable = imageService.getImageAsDrawable(MainViewActivity.this);
-                                if (drawable != null) {
-                                    imageView.setImageDrawable(drawable);
-                                } else {
-                                    Log.e("MainViewActivity", "Drawable is null.");
-                                }
-                            });
-                        }
-                    })
-                    .exceptionally(throwable -> {
-                        Log.e("MainViewActivity", "Error during image download", throwable);
-                        runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Error loading image: " + throwable.getMessage(), Toast.LENGTH_SHORT).show());
-                        return null;
-                    });
-
         }
 
         @Override
-        public void onServiceDisconnected(ComponentName name) {
-            Toast.makeText(getApplicationContext(), "Service Disconnected", Toast.LENGTH_SHORT).show();
-        }
+        public void onServiceDisconnected(ComponentName name) {}
     }
 }

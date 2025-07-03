@@ -1,6 +1,7 @@
 package pl.vrtechnology.tires;
 
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +20,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.sse.EventSources;
 
 public class ImageBoundedService extends Service {
 
@@ -26,11 +32,31 @@ public class ImageBoundedService extends Service {
     private static final String UPDATE_URL = "http://172.20.0.226:8080/update";
 
     private final IBinder binder = new LocalBinder();
+    private final UpdateListener updateListener;
+
+    private final OkHttpClient client;
+    private final Request request;
+
 
     private byte[] cachedImageData = null;
 
-    public byte[] getCachedImageData() {
-        return cachedImageData;
+    public ImageBoundedService() {
+        this.updateListener = new UpdateListener(this);
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(0, TimeUnit.MINUTES)
+                .build();
+
+        this.request = new Request.Builder()
+                .url(UPDATE_URL)
+                .build();
+
+        connectUpdateChannel();
+    }
+
+    public void connectUpdateChannel() {
+        EventSources.createFactory(client)
+                .newEventSource(request, updateListener);
     }
 
     @Nullable
@@ -39,7 +65,7 @@ public class ImageBoundedService extends Service {
         return binder;
     }
 
-    public CompletableFuture<Integer> downloadImage() {
+    public CompletableFuture<Void> downloadImage() {
         Log.d("ImageBoundedService", "SYNC");
         return CompletableFuture.supplyAsync(() -> {
             HttpURLConnection urlConnection = null;
@@ -66,7 +92,8 @@ public class ImageBoundedService extends Service {
 
                 cachedImageData = byteArrayOutputStream.toByteArray();
                 Log.d("ImageBoundedService", "RETURN: " + cachedImageData.length);
-                return cachedImageData.length;
+                sendImageLoadedBroadcast();
+                return null;
 
             } catch (Exception exception) {
                 Log.e("ImageBoundedService", "downloadImage: fetching image", exception);
@@ -98,6 +125,12 @@ public class ImageBoundedService extends Service {
         } else {
             return null;
         }
+    }
+
+    private void sendImageLoadedBroadcast() {
+        Intent intent = new Intent("com.vrtechnology.IMAGE_LOADED");
+        Log.d("ImageBoundedService", "INTENT");
+        sendBroadcast(intent);
     }
 
     public class LocalBinder extends Binder {

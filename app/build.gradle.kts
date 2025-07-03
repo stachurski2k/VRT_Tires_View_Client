@@ -38,6 +38,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:2.5.0")
     implementation("androidx.databinding:databinding-runtime:7.2.0")
 
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
