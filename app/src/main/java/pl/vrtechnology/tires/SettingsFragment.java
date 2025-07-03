@@ -19,32 +19,33 @@ import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
-public class Ustawienia extends Fragment {
+public class SettingsFragment extends Fragment {
+
     EditText ip, port;
     TextView textView_koncowe;
     Button button_zatwierdz;
+
     private static final String IP_ADDRESS_PATTERN =
             "^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}"
                     + "(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)$";
     public static String string_ip;
     public static int int_port;
     private static final Pattern pattern = Pattern.compile(IP_ADDRESS_PATTERN);
-    public Ustawienia() {
-        super(R.layout.fragment_ustawienia); // <-- layout fragmentu
+    public SettingsFragment() {
+        super(R.layout.settings_fragment); // <-- layout fragmentu
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_ustawienia, container, false);
+        return inflater.inflate(R.layout.settings_fragment, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ip = view.findViewById(R.id.editText_ip);
-        port = view.findViewById(R.id.editText_port);
-        textView_koncowe = view.findViewById(R.id.koncowe);
+        ip = view.findViewById(R.id.settings_ip_edit_text);
+        port = view.findViewById(R.id.settings_port_edit_text);
         button_zatwierdz = view.findViewById(R.id.buttonZatwierdz);
 
         button_zatwierdz.setOnClickListener(

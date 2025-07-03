@@ -15,13 +15,13 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch(position){
             case 0:
-                return new Odczyt();
+                return new ResultFragment();
             case 1:
-                return new Zaawansowane();
+                return new AdvancedFragment();
             case 2:
-                return new Ustawienia();
+                return new SettingsFragment();
             default:
-                return new Odczyt();
+                return new ResultFragment();
         }
     }
 

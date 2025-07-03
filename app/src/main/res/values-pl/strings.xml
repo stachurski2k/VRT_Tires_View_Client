@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">VRT Bieżnik</string>
+    <string name="tread_thickness_measurement_result">"Wynik pomiaru grubości bieżnika "</string>
+    <string name="result_menu_tab_name">Odczyt</string>
+    <string name="advanced_menu_tab_name">Zaawansowane</string>
+    <string name="settings_menu_tab_name">Ustawienia</string>
 </resources>

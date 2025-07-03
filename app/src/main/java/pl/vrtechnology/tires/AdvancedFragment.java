@@ -10,12 +10,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
 
-public class Zaawansowane extends Fragment {
+public class AdvancedFragment extends Fragment {
     Slider slider_szerokosc, slider_srednica, slider_profil;
     TextView textView_szerokosc, textView_profil, textView_srednica;
 
@@ -24,16 +23,16 @@ public class Zaawansowane extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_zaawansowane, container, false);
+        return inflater.inflate(R.layout.advanced_fragment, container, false);
 
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        slider_szerokosc = view.findViewById(R.id.slider_szerokosc);
-        slider_srednica = view.findViewById(R.id.slider_srednica);
-        slider_profil = view.findViewById(R.id.slider_profil);
+        slider_szerokosc = view.findViewById(R.id.advanced_slider_tire_width);
+        slider_srednica = view.findViewById(R.id.advanced_slider_tire_diameter);
+        slider_profil = view.findViewById(R.id.advanced_slider_tire_profile);
 
         textView_srednica = view.findViewById(R.id.textView_srednica);
         textView_profil = view.findViewById(R.id.textView_profil);

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.ProcessLifecycleOwner;
 
-public class MainApplication extends Application {
+public class TiresApplication extends Application {
 
     @Override
     public void onCreate() {

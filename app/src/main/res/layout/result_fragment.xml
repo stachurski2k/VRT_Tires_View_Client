@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Odczyt">
+    tools:context=".ResultFragment">
 
     <ImageView
-        android:id="@+id/obraz"
+        android:id="@+id/result_image_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/pietruszka"/>
+        android:contentDescription="@string/tread_thickness_measurement_result"
+        android:src="@drawable/parsley"/>
 
 </FrameLayout>

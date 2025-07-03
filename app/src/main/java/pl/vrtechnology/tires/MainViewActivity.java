@@ -8,9 +8,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import pl.vrtechnology.tires.R;
-import pl.vrtechnology.tires.ViewPagerAdapter;
-
 public class MainViewActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
@@ -20,7 +17,7 @@ public class MainViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_view_activity); // Upewnij się że to jest TWÓJ layout
+        setContentView(R.layout.main_activity); // Upewnij się że to jest TWÓJ layout
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }

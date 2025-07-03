@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">VRT Tires</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tread_thickness_measurement_result">Tread thickness measurement result</string>
+    <string name="result_menu_tab_name">Odczyt</string>
+    <string name="advanced_menu_tab_name">Advanced</string>
+    <string name="settings_menu_tab_name">Settings</string>
+    <string name="settings_ip">IP</string>
+    <string name="settings_port">PORT</string>
+    <string name="settings_ip_hint">Podaj IP</string>
+    <string name="settings_colon">:</string>
+    <string name="settings_port_hint">Podaj PORT</string>
+    <string name="settings_save_button">Zatwierdź</string>
 </resources>
