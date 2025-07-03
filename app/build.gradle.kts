@@ -33,16 +33,16 @@ android {
 }
 
 dependencies {
-    implementation("androidx.lifecycle:lifecycle-viewmodel:2.5.0")
-    implementation("androidx.lifecycle:lifecycle-livedata:2.5.0")
-    implementation("androidx.lifecycle:lifecycle-runtime:2.5.0")
-    implementation("androidx.lifecycle:lifecycle-process:2.5.0")
-    implementation("androidx.databinding:databinding-runtime:7.2.0")
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.lifecycle.process)
+    implementation(libs.databinding.runtime)
 
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.sse)
 
-    implementation("com.google.android.material:material:1.9.0")
+    implementation(libs.material)
 
     implementation("com.google.dagger:hilt-android:2.44")
     annotationProcessor("com.google.dagger:hilt-compiler:2.44")
