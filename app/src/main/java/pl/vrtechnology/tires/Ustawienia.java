@@ -1,5 +1,7 @@
 package pl.vrtechnology.tires;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import java.util.regex.Pattern;
 public class Ustawienia extends Fragment {
     EditText ip, port;
     TextView textView_koncowe;
+    Button button_zatwierdz;
     private static final String IP_ADDRESS_PATTERN =
             "^((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)\\.){3}"
                     + "(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)$";
@@ -40,18 +44,57 @@ public class Ustawienia extends Fragment {
         ip = view.findViewById(R.id.editText_ip);
         port = view.findViewById(R.id.editText_port);
         textView_koncowe = view.findViewById(R.id.koncowe);
-        string_ip = ip.getText().toString();
-        //bez parseinta
+        button_zatwierdz = view.findViewById(R.id.buttonZatwierdz);
+
+        button_zatwierdz.setOnClickListener(
+                new View.OnClickListener() {
+                    private View v;
+
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onClick(View v) {
+                        this.v = v;
+                        string_ip = ip.getText().toString();
+                        if(isValidIP(string_ip) && tryParsePort(port.getText().toString())){
+                            int_port = Integer.parseInt(port.getText().toString());
+                            textView_koncowe.setText(string_ip+" : "+int_port);
+
+                            new AlertDialog.Builder(requireContext())
+                                    .setTitle("Potwierdź wybór")
+                                    .setMessage("Czy chcesz kontynuować?")
+                                    .setPositiveButton("Tak", (dialog, which) -> {
+                                        Toast.makeText(requireContext(), "Kliknięto TAK", Toast.LENGTH_SHORT).show();
+                                        // np. wywołanie metody, zmiana stanu, itd.
+                                    })
+                                    .setNegativeButton("Nie", (dialog, which) -> {
+                                        Toast.makeText(requireContext(), "Kliknięto NIE", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    })
+                                    .show();
+                        }
+                        else{
+                            textView_koncowe.setText("nie poprawny port lub adres ip");
+                        }
+                    }
+                }
+        );
     }
 
     public static boolean isValidIP(String ip) {
         if (ip == null) return false;
         return pattern.matcher(ip).matches();
     }
-    public static boolean isValidPORT(int port){
-        if(port >= 0 && port <= 65535){
-            return true;
+    private Boolean tryParsePort(String value) {
+        try {
+            int port = Integer.parseInt(value);
+            if (port >= 0 && port <= 65535) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
         }
-        return false;
     }
+
 }
