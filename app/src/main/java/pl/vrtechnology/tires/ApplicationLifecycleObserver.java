@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import pl.vrtechnology.tires.data.ImageBoundedService;
+import pl.vrtechnology.tires.image.ImageService;
 
 public class ApplicationLifecycleObserver implements DefaultLifecycleObserver {
 
@@ -39,13 +39,13 @@ public class ApplicationLifecycleObserver implements DefaultLifecycleObserver {
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        Intent serviceIntent = new Intent(context, ImageBoundedService.class);
+        Intent serviceIntent = new Intent(context, ImageService.class);
         context.startService(serviceIntent);
     }
 
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
-        Intent serviceIntent = new Intent(context, ImageBoundedService.class);
+        Intent serviceIntent = new Intent(context, ImageService.class);
         context.stopService(serviceIntent);
     }
 }

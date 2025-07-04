@@ -1,19 +1,16 @@
-package pl.vrtechnology.tires.data;
+package pl.vrtechnology.tires.image;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -28,12 +25,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.sse.EventSources;
 
-public class ImageBoundedService extends Service {
+public class ImageService extends Service {
 
-    private static final String IMAGE_URL = "http://172.20.0.226:8080/image";
-    private static final String UPDATE_URL = "http://172.20.0.226:8080/update";
+    private static final String IMAGE_URL = "http://83.168.69.49:2323/image";
+    private static final String UPDATE_URL = "http://83.168.69.49:2323/update";
 
-    private final IBinder binder = new LocalBinder();
     private final UpdateListener updateListener;
 
     private final OkHttpClient client;
@@ -44,8 +40,9 @@ public class ImageBoundedService extends Service {
     
     private byte[] cachedImageData = null;
 
-    public ImageBoundedService() {
-        Log.d("ImageBoundedService", "ImageBoundedService: CONSTRUCTOR");
+    public ImageService() {
+        Log.d("ImageBoundedService", "ImageBoundedService: SERVICE CONSTRUCTOR");
+
         this.updateListener = new UpdateListener(this);
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
@@ -64,20 +61,11 @@ public class ImageBoundedService extends Service {
                 .newEventSource(request, updateListener);
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
-    }
-
     public CompletableFuture<Void> downloadImage() {
-        Log.d("ImageBoundedService", "SYNC");
-        return CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.runAsync(() -> {
             HttpURLConnection urlConnection = null;
             InputStream inputStream = null;
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            Log.d("ImageBoundedService", "ASYNC");
 
             try {
                 URL url = new URL(IMAGE_URL);
@@ -96,9 +84,8 @@ public class ImageBoundedService extends Service {
                 }
 
                 cachedImageData = byteArrayOutputStream.toByteArray();
-                Log.d("ImageBoundedService", "RETURN: " + cachedImageData.length);
-                sendImageLoadedBroadcast();
-                return null;
+                Bitmap bitmap = BitmapFactory.decodeByteArray(cachedImageData, 0, cachedImageData.length);
+                sendImageLoadedBroadcast(bitmap);
 
             } catch (Exception exception) {
                 Log.e("ImageBoundedService", "downloadImage: fetching image", exception);
@@ -114,33 +101,18 @@ public class ImageBoundedService extends Service {
         });
     }
 
-    @Nullable
-    public Drawable getImageAsDrawable(@NonNull Context context) {
-        return byteArrayToDrawable(cachedImageData, context);
-    }
+    private void sendImageLoadedBroadcast(Bitmap bitmap) {
+        ImageDownloadedEvent event = new ImageDownloadedEvent(bitmap);
+        EventBus.getDefault().post(event);
 
-    @Nullable
-    private Drawable byteArrayToDrawable(byte[] byteArray, Context context) {
-        if(byteArray == null) {
-            return null;
-        }
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        if (bitmap != null) {
-            return new BitmapDrawable(context.getResources(), bitmap);
-        } else {
-            return null;
-        }
-    }
-
-    private void sendImageLoadedBroadcast() {
         @SuppressLint("UnsafeImplicitIntentLaunch") Intent intent = new Intent("com.vrtechnology.IMAGE_LOADED");
         Log.d("ImageBoundedService", "INTENT");
         sendBroadcast(intent);
     }
 
-    public class LocalBinder extends Binder {
-        ImageBoundedService getService() {
-            return ImageBoundedService.this;
-        }
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

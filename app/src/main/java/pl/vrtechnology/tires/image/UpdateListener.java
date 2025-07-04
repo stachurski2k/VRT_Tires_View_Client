@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires.data;
+package pl.vrtechnology.tires.image;
 
 import android.util.Log;
 
@@ -15,10 +15,10 @@ import okhttp3.sse.EventSourceListener;
 
 class UpdateListener extends EventSourceListener {
 
-    private final ImageBoundedService service;
+    private final ImageService service;
     private final ScheduledExecutorService scheduler;
 
-    public UpdateListener(ImageBoundedService service) {
+    public UpdateListener(ImageService service) {
         super();
         this.service = service;
         this.scheduler = Executors.newSingleThreadScheduledExecutor();

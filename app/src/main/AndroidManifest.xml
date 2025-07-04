@@ -17,7 +17,7 @@
         android:theme="@style/Theme.VRTTiresViewClient"
         tools:targetApi="31">
 
-        <service android:name="pl.vrtechnology.tires.data.ImageBoundedService" />
+        <service android:name="pl.vrtechnology.tires.image.ImageService" />
 
         <activity android:exported="true" android:name="pl.vrtechnology.tires.MainViewActivity">
             <intent-filter>

@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires.data;
+package pl.vrtechnology.tires.image;
 
 import javax.inject.Singleton;
 

@@ -18,7 +18,6 @@ import pl.vrtechnology.tires.R;
 @AndroidEntryPoint
 public class ResultFragment extends Fragment {
 
-    private ResultViewModel viewModel;
     private ImageView resultView;
 
     public ResultFragment() {
@@ -33,11 +32,10 @@ public class ResultFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         resultView = view.findViewById(R.id.result_image_view);
-
-        viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+        ResultViewModel viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
         viewModel.getImage().observe(getViewLifecycleOwner(), bitmap -> {
             if (bitmap != null) {
-                resultView.setImageDrawable(bitmap);
+                resultView.setImageBitmap(bitmap);
             }
         });
     }
