@@ -10,10 +10,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import javax.inject.Inject;
+
 public class ImageRepository {
 
     private final MutableLiveData<Bitmap> imageLiveData = new MutableLiveData<>();
 
+    @Inject
     ImageRepository() {
         EventBus.getDefault().register(this);
     }

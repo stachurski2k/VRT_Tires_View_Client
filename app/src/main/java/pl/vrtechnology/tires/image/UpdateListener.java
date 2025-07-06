@@ -1,7 +1,5 @@
 package pl.vrtechnology.tires.image;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -26,28 +24,16 @@ class UpdateListener extends EventSourceListener {
 
     @Override
     public void onClosed(@NonNull EventSource eventSource) {
-        scheduler.schedule(() -> {
-            service.connectUpdateChannel();
-            Log.d("UpdateListener", "onClosed");
-        }, 5, TimeUnit.SECONDS);
+        scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
     }
 
     @Override
     public void onEvent(@NonNull EventSource eventSource, @Nullable String id, @Nullable String type, @NonNull String data) {
         service.downloadImage();
-        Log.d("UpdateListener", "DOWNLOAD");
     }
 
     @Override
     public void onFailure(@NonNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
-        scheduler.schedule(() -> {
-            service.connectUpdateChannel();
-            Log.d("UpdateListener", "onFailure");
-        }, 5, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void onOpen(@NonNull EventSource eventSource, @NonNull Response response) {
-        Log.d("UpdateListener", "onOpen");
+        scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
     }
 }

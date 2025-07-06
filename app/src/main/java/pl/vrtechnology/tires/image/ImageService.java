@@ -1,6 +1,5 @@
 package pl.vrtechnology.tires.image;
 
-import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,95 +7,100 @@ import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSources;
+import pl.vrtechnology.tires.settings.SettingsRepository;
 
+@AndroidEntryPoint
 public class ImageService extends Service {
 
-    private static final String IMAGE_URL = "http://83.168.69.49:2323/image";
-    private static final String UPDATE_URL = "http://83.168.69.49:2323/update";
+    // image
+    private final OkHttpClient imageClient = new OkHttpClient();
+    private Request imageRequest;
 
-    private final UpdateListener updateListener;
+    // update
+    private UpdateListener updateListener;
+    private OkHttpClient sseUpdateClient;
+    private Request sseUpdateRequest;
+    private EventSource sseUpdateSource;
 
-    private final OkHttpClient client;
-    private final Request request;
-
+    // repositories
     @Inject
-    ImageRepository repository;
+    ImageRepository imageRepository;
+    @Inject
+    SettingsRepository settingsRepository;
     
     private byte[] cachedImageData = null;
 
-    public ImageService() {
-        Log.d("ImageBoundedService", "ImageBoundedService: SERVICE CONSTRUCTOR");
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        EventBus.getDefault().register(this);
+        imageRequest = new Request.Builder()
+                .url(createUrl("image"))
+                .build();
+        updateListener = new UpdateListener(this);
+        initializeChannels();
+        connectUpdateChannel();
+        downloadImage();
+        return START_STICKY;
+    }
 
-        this.updateListener = new UpdateListener(this);
-        this.client = new OkHttpClient.Builder()
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        if(sseUpdateSource != null) {
+            sseUpdateSource.cancel();
+        }
+    }
+
+    private void initializeChannels() {
+        imageRequest = new Request.Builder()
+                .url(createUrl("image"))
+                .build();
+        sseUpdateClient = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(0, TimeUnit.MINUTES)
                 .build();
-
-        this.request = new Request.Builder()
-                .url(UPDATE_URL)
+        sseUpdateRequest = new Request.Builder()
+                .url(createUrl("update"))
                 .build();
+    }
 
+    @Subscribe
+    public void onSettingsUpdatedEvent(SettingsRepository.SettingsUpdatedEvent event) {
+        initializeChannels();
         connectUpdateChannel();
     }
 
-    public void connectUpdateChannel() {
-        EventSources.createFactory(client)
-                .newEventSource(request, updateListener);
-    }
-
-    public CompletableFuture<Void> downloadImage() {
-        return CompletableFuture.runAsync(() -> {
-            HttpURLConnection urlConnection = null;
-            InputStream inputStream = null;
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            try {
-                URL url = new URL(IMAGE_URL);
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setDoInput(true);
-                urlConnection.connect();
-
-                inputStream = urlConnection.getInputStream();
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+    public void downloadImage() {
+        CompletableFuture.runAsync(() -> {
+            try (Response response = imageClient.newCall(imageRequest).execute()) {
+                if (response.body() == null) {
+                    Log.e("ImageService", "downloadImage: Response body is null!");
+                    return;
                 }
-
-                cachedImageData = byteArrayOutputStream.toByteArray();
+                cachedImageData = response.body().bytes();
                 Bitmap bitmap = BitmapFactory.decodeByteArray(cachedImageData, 0, cachedImageData.length);
                 sendImageLoadedBroadcast(bitmap);
-
             } catch (Exception exception) {
-                Log.e("ImageBoundedService", "downloadImage: fetching image", exception);
+                Log.e("ImageService", "downloadImage: Failed to download image!", exception);
                 throw new RuntimeException(exception);
-            } finally {
-                try {
-                    if (inputStream != null) inputStream.close();
-                    if (urlConnection != null) urlConnection.disconnect();
-                } catch (Exception e) {
-                    Log.e("ImageBoundedService", "downloadImage: closing connection", e);
-                }
             }
         });
     }
@@ -104,10 +108,19 @@ public class ImageService extends Service {
     private void sendImageLoadedBroadcast(Bitmap bitmap) {
         ImageDownloadedEvent event = new ImageDownloadedEvent(bitmap);
         EventBus.getDefault().post(event);
+    }
 
-        @SuppressLint("UnsafeImplicitIntentLaunch") Intent intent = new Intent("com.vrtechnology.IMAGE_LOADED");
-        Log.d("ImageBoundedService", "INTENT");
-        sendBroadcast(intent);
+    void connectUpdateChannel() {
+        if(sseUpdateSource != null) {
+            sseUpdateSource.cancel();
+        }
+        sseUpdateSource = EventSources.createFactory(sseUpdateClient)
+                .newEventSource(sseUpdateRequest, updateListener);
+    }
+
+    @NonNull
+    private String createUrl(@NonNull String endpoint) {
+        return String.format(Locale.US, "http://%s:%d/%s", settingsRepository.getDeviceAddressIp(), settingsRepository.getDeviceAddressPort(), endpoint);
     }
 
     @Nullable
