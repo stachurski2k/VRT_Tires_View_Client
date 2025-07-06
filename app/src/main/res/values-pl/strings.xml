@@ -3,6 +3,17 @@
     <string name="app_name">VRT Bieżnik</string>
     <string name="tread_thickness_measurement_result">"Wynik pomiaru grubości bieżnika "</string>
     <string name="result_menu_tab_name">Odczyt</string>
-    <string name="advanced_menu_tab_name">Zaawansowane</string>
+    <string name="advanced_menu_tab_name">Opona</string>
     <string name="settings_menu_tab_name">Ustawienia</string>
+    <string name="settings_ip">IP</string>
+    <string name="settings_port">PORT</string>
+    <string name="settings_ip_hint">Podaj IP</string>
+    <string name="settings_save_button">Zatwierdź</string>
+    <string name="settings_port_hint">Podaj port</string>
+    <string name="validation_error_incorrect_ip">Nieprawidłowy format IP</string>
+    <string name="validation_error_incorrect_port">Nieprawidłowy port</string>
+    <string name="settings_alert_title">Ustawienia</string>
+    <string name="settings_alert_message">Czy na pewno chcesz zapisać nowe ustawienia?</string>
+    <string name="settings_alert_cancel">Anuluj</string>
+    <string name="settings_alert_save">Zapisz</string>
 </resources>

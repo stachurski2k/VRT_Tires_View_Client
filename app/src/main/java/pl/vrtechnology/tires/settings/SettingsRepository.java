@@ -9,20 +9,28 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
 
-public class SettingsRepository {
+class SettingsRepository {
 
     private final SharedPreferences preferences;
 
     @Inject
-    public SettingsRepository(@ApplicationContext @NonNull Context context) {
+    SettingsRepository(@ApplicationContext @NonNull Context context) {
         this.preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
     }
 
-    public String getDeviceIp() {
-        return preferences.getString("device_ip", "172.20.0.226");
+    String getDeviceAddressIp() {
+        return preferences.getString("device_address_ip", "172.20.0.226");
     }
 
-    public void setDeviceIp(@NonNull String ip) {
-        preferences.edit().putString("device_ip", ip).apply();
+    void setDeviceAddressIp(@NonNull String ip) {
+        preferences.edit().putString("device_address_ip", ip).apply();
+    }
+
+    int getDeviceAddressPort() {
+        return preferences.getInt("device_address_port", 8080);
+    }
+
+    void setDeviceAddressPort(int port) {
+        preferences.edit().putInt("device_address_port", port).apply();
     }
 }

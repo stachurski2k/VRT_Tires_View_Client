@@ -1,13 +1,19 @@
 <resources>
     <string name="app_name">VRT Tires</string>
     <string name="tread_thickness_measurement_result">Tread thickness measurement result</string>
-    <string name="result_menu_tab_name">Odczyt</string>
+    <string name="result_menu_tab_name">Result</string>
     <string name="advanced_menu_tab_name">Advanced</string>
     <string name="settings_menu_tab_name">Settings</string>
     <string name="settings_ip">IP</string>
     <string name="settings_port">PORT</string>
-    <string name="settings_ip_hint">Podaj IP</string>
-    <string name="settings_colon">:</string>
-    <string name="settings_port_hint">Podaj PORT</string>
-    <string name="settings_save_button">Zatwierdź</string>
+    <string name="settings_ip_hint">Enter IP address</string>
+    <string name="settings_colon" translatable="false">:</string>
+    <string name="settings_save_button">Submit</string>
+    <string name="settings_port_hint">Enter port</string>
+    <string name="validation_error_incorrect_ip">Incorrect IP format</string>
+    <string name="validation_error_incorrect_port">Incorrect port</string>
+    <string name="settings_alert_title">Settings</string>
+    <string name="settings_alert_message">Do you want to save settings?</string>
+    <string name="settings_alert_cancel">Cancel</string>
+    <string name="settings_alert_save">Save</string>
 </resources>
