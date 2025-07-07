@@ -5,8 +5,6 @@
     <string name="result_menu_tab_name">Odczyt</string>
     <string name="advanced_menu_tab_name">Opona</string>
     <string name="settings_menu_tab_name">Ustawienia</string>
-    <string name="settings_ip">IP</string>
-    <string name="settings_port">PORT</string>
     <string name="settings_ip_hint">Podaj IP</string>
     <string name="settings_save_button">Zatwierdź</string>
     <string name="settings_port_hint">Podaj port</string>
@@ -16,4 +14,10 @@
     <string name="settings_alert_message">Czy na pewno chcesz zapisać nowe ustawienia?</string>
     <string name="settings_alert_cancel">Anuluj</string>
     <string name="settings_alert_save">Zapisz</string>
+    <string name="advanced_tire_width">Szerokość opony [mm]</string>
+    <string name="advanced_tire_profile">Profil opony</string>
+    <string name="advanced_tire_diameter">Średnica opony [cal]</string>
+    <string name="advanced_tire_setting_width">Szerokość: %d</string>
+    <string name="advanced_tire_setting_profile">Profil: %d</string>
+    <string name="advanced_tire_setting_diameter">Średnica: %d</string>
 </resources>

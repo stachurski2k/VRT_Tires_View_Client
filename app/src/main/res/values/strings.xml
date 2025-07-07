@@ -4,8 +4,8 @@
     <string name="result_menu_tab_name">Result</string>
     <string name="advanced_menu_tab_name">Advanced</string>
     <string name="settings_menu_tab_name">Settings</string>
-    <string name="settings_ip">IP</string>
-    <string name="settings_port">PORT</string>
+    <string name="settings_ip" translatable="false">IP</string>
+    <string name="settings_port" translatable="false">PORT</string>
     <string name="settings_ip_hint">Enter IP address</string>
     <string name="settings_colon" translatable="false">:</string>
     <string name="settings_save_button">Submit</string>
@@ -16,4 +16,10 @@
     <string name="settings_alert_message">Do you want to save settings?</string>
     <string name="settings_alert_cancel">Cancel</string>
     <string name="settings_alert_save">Save</string>
+    <string name="advanced_tire_width">Tire width [mm]</string>
+    <string name="advanced_tire_profile">Tire profile</string>
+    <string name="advanced_tire_diameter">Tire diameter [inch]</string>
+    <string name="advanced_tire_setting_width">Width: %d</string>
+    <string name="advanced_tire_setting_profile">Profile: %d</string>
+    <string name="advanced_tire_setting_diameter">Diameter: %d</string>
 </resources>

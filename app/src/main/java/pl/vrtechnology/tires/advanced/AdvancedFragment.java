@@ -1,11 +1,11 @@
 package pl.vrtechnology.tires.advanced;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,57 +14,47 @@ import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import pl.vrtechnology.tires.R;
 
+@AndroidEntryPoint
 public class AdvancedFragment extends Fragment {
-    Slider slider_szerokosc, slider_srednica, slider_profil;
-    TextView textView_szerokosc, textView_profil, textView_srednica;
-
-    int szerokosc, srednica, profil;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.advanced_fragment, container, false);
-
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AdvancedViewModel viewModel = new ViewModelProvider(this).get(AdvancedViewModel.class);
 
-        slider_szerokosc = view.findViewById(R.id.advanced_slider_tire_width);
-        slider_srednica = view.findViewById(R.id.advanced_slider_tire_diameter);
-        slider_profil = view.findViewById(R.id.advanced_slider_tire_profile);
+        // tire width
+        Slider tireWidthSlider = view.findViewById(R.id.advanced_slider_tire_width);
+        tireWidthSlider.setValue(viewModel.getTireParameters().getValue().getWidth());
+        tireWidthSlider.addOnChangeListener((slider, value, fromUser) -> viewModel.onTireWidthChange(value));
 
-        textView_srednica = view.findViewById(R.id.textView_srednica);
-        textView_profil = view.findViewById(R.id.textView_profil);
-        textView_szerokosc = view.findViewById(R.id.textView_szerokosc);
+        // tire profile
+        Slider tireDiameterSlider = view.findViewById(R.id.advanced_slider_tire_diameter);
+        tireDiameterSlider.setValue(viewModel.getTireParameters().getValue().getDiameter());
+        tireDiameterSlider.addOnChangeListener((slider, value, fromUser) -> viewModel.onTireDiameterChange(value));
 
-        slider_srednica.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                srednica = (int) value;
-                updateData(textView_srednica, "Średnica: "+srednica);
+        // tire diameter
+        Slider tireProfileSlider = view.findViewById(R.id.advanced_slider_tire_profile);
+        tireProfileSlider.setValue(viewModel.getTireParameters().getValue().getProfile());
+        tireProfileSlider.addOnChangeListener((slider, value, fromUser) -> viewModel.onTireProfileChange(value));
+
+        TextView tireWidthTextView = view.findViewById(R.id.tire_width_setting_text_view);
+        TextView tireDiameterTextView = view.findViewById(R.id.tire_profile_setting_text_view);
+        TextView tireProfileTextView = view.findViewById(R.id.tire_diameter_setting_text_view);
+
+        viewModel.getTireParameters().observe(getViewLifecycleOwner(), tireParameters -> {
+            if (tireParameters != null) {
+                tireWidthTextView.setText(getString(R.string.advanced_tire_setting_width, tireParameters.getWidth()));
+                tireProfileTextView.setText(getString(R.string.advanced_tire_setting_profile, tireParameters.getProfile()));
+                tireDiameterTextView.setText(getString(R.string.advanced_tire_setting_diameter, tireParameters.getDiameter()));
             }
         });
-        slider_szerokosc.addOnChangeListener(new Slider.OnChangeListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                szerokosc = (int) value;
-                updateData(textView_szerokosc, "Szerokosc: "+szerokosc);
-
-            }
-        });
-        slider_profil.addOnChangeListener(new Slider.OnChangeListener() {
-            @Override
-            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                profil = (int) value;
-                updateData(textView_profil, "Profil: "+profil);
-            }
-        });
-    }
-    private void updateData(TextView textview, String value){
-            textview.setText(value);
     }
 }
