@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.regex.Pattern;
 
 import pl.vrtechnology.tires.R;
-import pl.vrtechnology.tires.validation.ValidationResult;
+import pl.vrtechnology.tires.util.ValidationResult;
 
 class SettingsValidator {
 

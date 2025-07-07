@@ -17,7 +17,7 @@ import android.widget.EditText;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import pl.vrtechnology.tires.R;
-import pl.vrtechnology.tires.SimpleTextWatcher;
+import pl.vrtechnology.tires.util.SimpleTextWatcher;
 
 @AndroidEntryPoint
 public class SettingsFragment extends Fragment {

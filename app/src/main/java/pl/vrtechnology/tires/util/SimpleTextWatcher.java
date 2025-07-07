@@ -1,4 +1,4 @@
-package pl.vrtechnology.tires;
+package pl.vrtechnology.tires.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;
