@@ -70,6 +70,7 @@ public class ImageService extends Service {
     }
 
     private void initializeChannels() {
+        Log.d("ImageService", "initializeChannels");
         imageRequest = new Request.Builder()
                 .url(createUrl("image"))
                 .build();
@@ -111,6 +112,7 @@ public class ImageService extends Service {
     }
 
     synchronized void connectUpdateChannel() {
+        Log.d("ImageService", "connectUpdateChannel");
         if(sseUpdateSource != null) {
             sseUpdateSource.cancel();
         }

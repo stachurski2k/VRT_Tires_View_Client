@@ -31,7 +31,7 @@ class UpdateListener extends EventSourceListener {
 
     @Override
     public void onClosed(@NonNull EventSource eventSource) {
-        scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
+        //scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
     }
 
     @Override
