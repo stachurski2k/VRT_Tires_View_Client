@@ -41,6 +41,9 @@ class UpdateListener extends EventSourceListener {
 
     @Override
     public void onFailure(@NonNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
+        scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
         EventBus.getDefault().post(new ConnectionErrorEvent());
     }
+
+    // TODO reconnecting in onFailure and onClosed cause multiple connections
 }

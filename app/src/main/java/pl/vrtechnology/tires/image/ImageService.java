@@ -110,7 +110,7 @@ public class ImageService extends Service {
         EventBus.getDefault().post(event);
     }
 
-    void connectUpdateChannel() {
+    synchronized void connectUpdateChannel() {
         if(sseUpdateSource != null) {
             sseUpdateSource.cancel();
         }
