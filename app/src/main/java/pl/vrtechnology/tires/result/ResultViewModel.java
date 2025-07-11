@@ -56,6 +56,6 @@ public class ResultViewModel extends ViewModel {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onConnectionError(@NonNull ConnectionErrorEvent event) {
-        showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.result_alert_connection_error, Alert.Type.ERROR, 2000));
+        showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.result_alert_connection_error, Alert.Type.ERROR, -1));
     }
 }

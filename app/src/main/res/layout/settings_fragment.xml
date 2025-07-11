@@ -78,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="@color/black"
-        android:text="@string/settings_save_button" />
+        android:text="@string/settings_save_button"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

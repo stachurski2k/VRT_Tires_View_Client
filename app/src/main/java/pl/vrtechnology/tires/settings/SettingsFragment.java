@@ -68,7 +68,7 @@ public class SettingsFragment extends Fragment {
             if (canSave) {
                 submitButton.setAlpha(1.0f);
             } else {
-                submitButton.setAlpha(0.5f);
+                submitButton.setAlpha(0.3f);
             }
         });
 

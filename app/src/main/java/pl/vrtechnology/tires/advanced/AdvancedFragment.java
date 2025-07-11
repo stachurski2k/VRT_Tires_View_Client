@@ -51,7 +51,7 @@ public class AdvancedFragment extends Fragment {
         TextView tireDiameterTextView = view.findViewById(R.id.tire_profile_setting_text_view);
         TextView tireProfileTextView = view.findViewById(R.id.tire_diameter_setting_text_view);
 
-        viewModel.getTireParameters().observe(getViewLifecycleOwner(), tireParameters -> {
+        viewModel.getEditedTireParameters().observe(getViewLifecycleOwner(), tireParameters -> {
             if (tireParameters != null) {
                 tireWidthTextView.setText(getString(R.string.advanced_tire_setting_width, tireParameters.getWidth()));
                 tireProfileTextView.setText(getString(R.string.advanced_tire_setting_profile, tireParameters.getProfile()));

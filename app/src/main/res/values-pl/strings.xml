@@ -6,7 +6,7 @@
     <string name="advanced_menu_tab_name">Opona</string>
     <string name="settings_menu_tab_name">Ustawienia</string>
     <string name="settings_ip_hint">Podaj IP</string>
-    <string name="settings_save_button">Zatwierdź</string>
+    <string name="settings_save_button">Zapisz</string>
     <string name="settings_port_hint">Podaj port</string>
     <string name="validation_error_incorrect_ip">Nieprawidłowy format IP</string>
     <string name="validation_error_incorrect_port">Nieprawidłowy port</string>

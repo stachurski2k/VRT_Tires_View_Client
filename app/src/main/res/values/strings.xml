@@ -8,7 +8,7 @@
     <string name="settings_port" translatable="false">PORT</string>
     <string name="settings_ip_hint">Enter IP address</string>
     <string name="settings_colon" translatable="false">:</string>
-    <string name="settings_save_button">Submit</string>
+    <string name="settings_save_button">Save</string>
     <string name="settings_port_hint">Enter port</string>
     <string name="validation_error_incorrect_ip">Incorrect IP format</string>
     <string name="validation_error_incorrect_port">Incorrect port</string>

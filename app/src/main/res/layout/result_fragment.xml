@@ -16,7 +16,6 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/tread_thickness_measurement_result"
-        android:src="@drawable/parsley"/>
+        android:contentDescription="@string/tread_thickness_measurement_result"/>
 
 </FrameLayout>

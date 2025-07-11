@@ -144,6 +144,8 @@
 
     <TextView
         android:id="@+id/tire_width_setting_text_view"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -152,6 +154,8 @@
 
     <TextView
         android:id="@+id/tire_diameter_setting_text_view"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -159,6 +163,8 @@
 
     <TextView
         android:id="@+id/tire_profile_setting_text_view"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

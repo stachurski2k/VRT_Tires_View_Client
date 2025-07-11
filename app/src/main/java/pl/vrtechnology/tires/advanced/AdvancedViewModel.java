@@ -19,13 +19,13 @@ class AdvancedViewModel extends ViewModel {
 
     private final ParameterRepository parameterRepository;
     private final MutableLiveData<ShowAlertEvent> showAlertEventLiveData = new MutableLiveData<>();
-    private final TireParameters editedParameters;
+    private final MutableLiveData<TireParameters> editedParametersLiveData;
     private boolean notSubmittedChanges = false;
 
     @Inject
     AdvancedViewModel(@NonNull ParameterRepository parameterRepository) {
         this.parameterRepository = parameterRepository;
-        this.editedParameters = Objects.requireNonNull(parameterRepository.getTireParameters().getValue()).clone();
+        this.editedParametersLiveData = new MutableLiveData<>(Objects.requireNonNull(parameterRepository.getTireParameters().getValue()).clone());
     }
 
     @NonNull
@@ -38,23 +38,29 @@ class AdvancedViewModel extends ViewModel {
         return parameterRepository.getTireParameters();
     }
 
+    @NonNull
+    LiveData<TireParameters> getEditedTireParameters() {
+        return editedParametersLiveData;
+    }
+
     void onTireWidthChange(float width) {
-        editedParameters.setWidth((int) width);
+        Objects.requireNonNull(editedParametersLiveData.getValue()).setWidth((int) width);
         onParameterChange();
     }
 
     void onTireProfileChange(float profile) {
-        editedParameters.setProfile((int) profile);
+        Objects.requireNonNull(editedParametersLiveData.getValue()).setProfile((int) profile);
         onParameterChange();
     }
 
     void onTireDiameterChange(float diameter) {
-        editedParameters.setDiameter((int) diameter);
+        Objects.requireNonNull(editedParametersLiveData.getValue()).setDiameter((int) diameter);
         onParameterChange();
     }
 
     private void onParameterChange() {
-        if(!editedParameters.equals(parameterRepository.getTireParameters().getValue())) {
+        editedParametersLiveData.postValue(editedParametersLiveData.getValue());
+        if(!Objects.requireNonNull(editedParametersLiveData.getValue()).equals(parameterRepository.getTireParameters().getValue())) {
             if(!notSubmittedChanges) {
                 showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_unsaved, Alert.Type.INFO, -1));
             }
@@ -67,7 +73,7 @@ class AdvancedViewModel extends ViewModel {
 
     void onTireParametersSubmit() {
         notSubmittedChanges = false;
-        parameterRepository.setTireParameters(editedParameters.clone());
+        parameterRepository.setTireParameters(Objects.requireNonNull(editedParametersLiveData.getValue()).clone());
         showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_saved, Alert.Type.SUCCESS, 2000));
     }
 }
