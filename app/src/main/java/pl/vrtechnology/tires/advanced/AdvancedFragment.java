@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.slider.Slider;
@@ -56,5 +57,8 @@ public class AdvancedFragment extends Fragment {
                 tireDiameterTextView.setText(getString(R.string.advanced_tire_setting_diameter, tireParameters.getDiameter()));
             }
         });
+
+        Button submitButton = view.findViewById(R.id.tire_settings_submit);
+        submitButton.setOnClickListener(v -> viewModel.onTireParametersSubmit());
     }
 }

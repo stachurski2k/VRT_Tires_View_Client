@@ -22,4 +22,5 @@
     <string name="advanced_tire_setting_width">Width: %d</string>
     <string name="advanced_tire_setting_profile">Profile: %d</string>
     <string name="advanced_tire_setting_diameter">Diameter: %d</string>
+    <string name="advanced_submit">Submit</string>
 </resources>

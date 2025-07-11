@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     tools:context=".advanced.AdvancedFragment">
 
     <TextView
@@ -142,20 +141,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Szerokość: 135" />
+        android:layout_marginTop="20sp"
+        android:text="@string/advanced_tire_setting_width" />
 
     <TextView
         android:id="@+id/tire_diameter_setting_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Profil : 30" />
+        android:text="@string/advanced_tire_setting_profile" />
 
     <TextView
         android:id="@+id/tire_profile_setting_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Średnica : 12" />
+        android:layout_marginBottom="20sp"
+        android:text="@string/advanced_tire_setting_diameter" />
+
+    <Button
+        android:id="@+id/tire_settings_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/black"
+        android:text="@string/advanced_submit"/>
 
 </LinearLayout>

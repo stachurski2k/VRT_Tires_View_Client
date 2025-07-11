@@ -47,6 +47,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     annotationProcessor("com.google.dagger:hilt-compiler:2.44")
 
+    implementation("com.google.code.gson:gson:2.13.1")
     implementation("org.greenrobot:eventbus:3.3.1")
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
