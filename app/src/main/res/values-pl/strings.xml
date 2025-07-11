@@ -21,4 +21,10 @@
     <string name="advanced_tire_setting_profile">Profil: %d</string>
     <string name="advanced_tire_setting_diameter">Średnica: %d</string>
     <string name="advanced_submit">Zatwierdź</string>
+    <string name="settings_alert_saved">Zapisano ustawienia</string>
+    <string name="advanced_alert_saved">Zatwierdzono parametry opony</string>
+    <string name="advanced_alert_unsaved">Nie zatwierdzone parametry</string>
+    <string name="settings_alert_unsaved">Nie zapisane ustawienia</string>
+    <string name="result_alert_connection_success">Połączono.</string>
+    <string name="result_alert_connection_error">Błąd połączenia!</string>
 </resources>

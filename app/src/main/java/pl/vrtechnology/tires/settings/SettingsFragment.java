@@ -17,6 +17,7 @@ import android.widget.EditText;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import pl.vrtechnology.tires.R;
+import pl.vrtechnology.tires.alert.Alert;
 import pl.vrtechnology.tires.util.SimpleTextWatcher;
 
 @AndroidEntryPoint
@@ -86,6 +87,15 @@ public class SettingsFragment extends Fragment {
                     .show();
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.DKGRAY);
             alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+        });
+
+        Alert alert = view.findViewById(R.id.settings_alert);
+        viewModel.getShowAlertEvent().observe(getViewLifecycleOwner(), event -> {
+            if(event == null) {
+                alert.hide();
+            } else {
+                alert.show(event.getText(requireContext()), event.getType(), event.getDuration());
+            }
         });
     }
 }

@@ -28,7 +28,7 @@ public class MainViewActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        tabLayout = findViewById(R.id.tabLayout);
+        tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.viewpager2);
 
         viewPagerAdapter = new ViewPagerAdapter(this);

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import pl.vrtechnology.tires.R;
+import pl.vrtechnology.tires.alert.Alert;
 
 @AndroidEntryPoint
 public class ResultFragment extends Fragment {
@@ -33,9 +34,19 @@ public class ResultFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         resultView = view.findViewById(R.id.result_image_view);
         ResultViewModel viewModel = new ViewModelProvider(this).get(ResultViewModel.class);
+
         viewModel.getImage().observe(getViewLifecycleOwner(), bitmap -> {
             if (bitmap != null) {
                 resultView.setImageBitmap(bitmap);
+            }
+        });
+
+        Alert alert = view.findViewById(R.id.result_alert);
+        viewModel.getShowAlertEventLiveData().observe(getViewLifecycleOwner(), event -> {
+            if(event == null) {
+                alert.hide();
+            } else {
+                alert.show(event.getText(requireContext()), event.getType(), event.getDuration());
             }
         });
     }

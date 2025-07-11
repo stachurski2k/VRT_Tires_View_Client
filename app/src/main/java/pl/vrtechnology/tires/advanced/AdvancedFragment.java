@@ -17,6 +17,7 @@ import com.google.android.material.slider.Slider;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import pl.vrtechnology.tires.R;
+import pl.vrtechnology.tires.alert.Alert;
 
 @AndroidEntryPoint
 public class AdvancedFragment extends Fragment {
@@ -60,5 +61,14 @@ public class AdvancedFragment extends Fragment {
 
         Button submitButton = view.findViewById(R.id.tire_settings_submit);
         submitButton.setOnClickListener(v -> viewModel.onTireParametersSubmit());
+
+        Alert alert = view.findViewById(R.id.advanced_alert);
+        viewModel.getShowAlertEvent().observe(getViewLifecycleOwner(), event -> {
+            if(event == null) {
+                alert.hide();
+            } else {
+                alert.show(event.getText(requireContext()), event.getType(), event.getDuration());
+            }
+        });
     }
 }

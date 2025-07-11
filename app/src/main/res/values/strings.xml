@@ -23,4 +23,10 @@
     <string name="advanced_tire_setting_profile">Profile: %d</string>
     <string name="advanced_tire_setting_diameter">Diameter: %d</string>
     <string name="advanced_submit">Submit</string>
+    <string name="settings_alert_saved">Settings saved</string>
+    <string name="advanced_alert_saved">Parameters submitted</string>
+    <string name="advanced_alert_unsaved">Not submitted changes</string>
+    <string name="settings_alert_unsaved">Unsaved changes</string>
+    <string name="result_alert_connection_success">Connected.</string>
+    <string name="result_alert_connection_error">Connection failed!</string>
 </resources>

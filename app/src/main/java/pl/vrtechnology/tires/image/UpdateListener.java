@@ -3,6 +3,8 @@ package pl.vrtechnology.tires.image;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +25,11 @@ class UpdateListener extends EventSourceListener {
     }
 
     @Override
+    public void onOpen(@NonNull EventSource eventSource, @NonNull Response response) {
+        EventBus.getDefault().post(new ConnectionSuccessEvent());
+    }
+
+    @Override
     public void onClosed(@NonNull EventSource eventSource) {
         scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
     }
@@ -35,5 +42,6 @@ class UpdateListener extends EventSourceListener {
     @Override
     public void onFailure(@NonNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
         scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
+        EventBus.getDefault().post(new ConnectionErrorEvent());
     }
 }

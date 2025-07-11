@@ -10,18 +10,23 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import pl.vrtechnology.tires.R;
+import pl.vrtechnology.tires.alert.Alert;
+import pl.vrtechnology.tires.alert.ShowAlertEvent;
 
 @HiltViewModel
 class SettingsViewModel extends ViewModel {
 
     private final SettingsRepository settingsRepository;
     private final SettingsValidator validator = new SettingsValidator();
+
+    private final MutableLiveData<ShowAlertEvent> showAlertEventLiveData = new MutableLiveData<>();
 
     private final MutableLiveData<String> deviceIpInput;
     private final MutableLiveData<String> deviceIpError = new MutableLiveData<>();
@@ -31,6 +36,8 @@ class SettingsViewModel extends ViewModel {
 
     private final MutableLiveData<Boolean> canSaveSettings = new MutableLiveData<>(false);
     private final MutableLiveData<ShowConfirmDialogEvent> showConfirmDialogEvent = new MutableLiveData<>();
+
+    private boolean notSavedSettings = false;
 
     @Inject
     SettingsViewModel(@NonNull SettingsRepository settingsRepository) {
@@ -53,6 +60,7 @@ class SettingsViewModel extends ViewModel {
         } else {
             deviceIpError.postValue(context.getResources().getString(result.getErrorMessage()));
         }
+        onDataChanged();
     }
 
     @NonNull
@@ -74,6 +82,7 @@ class SettingsViewModel extends ViewModel {
         } else {
             devicePortError.postValue(context.getResources().getString(result.getErrorMessage()));
         }
+        onDataChanged();
     }
 
     @NonNull
@@ -111,6 +120,20 @@ class SettingsViewModel extends ViewModel {
         canSaveSettings.postValue(false);
         settingsRepository.setDeviceAddressIp(Objects.requireNonNull(deviceIpInput.getValue()));
         settingsRepository.setDeviceAddressPort(Objects.requireNonNull(devicePortInput.getValue()));
+        showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.settings_alert_saved, Alert.Type.SUCCESS, 3000));
+        notSavedSettings = false;
+    }
+
+    @Nonnull
+    LiveData<ShowAlertEvent> getShowAlertEvent() {
+        return showAlertEventLiveData;
+    }
+
+    private void onDataChanged() {
+        if(!notSavedSettings) {
+            notSavedSettings = true;
+            showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.settings_alert_unsaved, Alert.Type.INFO, -1));
+        }
     }
 
     @Getter
