@@ -19,7 +19,8 @@ public class ApplicationLifecycleObserver implements DefaultLifecycleObserver {
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
-
+        Intent serviceIntent = new Intent(context, ImageService.class);
+        context.startService(serviceIntent);
     }
 
     @Override
@@ -39,8 +40,7 @@ public class ApplicationLifecycleObserver implements DefaultLifecycleObserver {
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        Intent serviceIntent = new Intent(context, ImageService.class);
-        context.startService(serviceIntent);
+
     }
 
     @Override
