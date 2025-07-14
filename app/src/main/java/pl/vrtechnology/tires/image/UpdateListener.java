@@ -8,6 +8,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.net.SocketException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
@@ -30,6 +31,11 @@ class UpdateListener extends EventSourceListener {
     }
 
     @Override
+    public void onClosed(@NonNull EventSource eventSource) {
+        //scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
+    }
+
+    @Override
     public void onEvent(@NonNull EventSource eventSource, @Nullable String id, @Nullable String type, @NonNull String data) {
         service.downloadImage();
     }
@@ -39,7 +45,7 @@ class UpdateListener extends EventSourceListener {
         if (t instanceof SocketException && t.getMessage() != null && t.getMessage().contains("Socket closed")) {
             return;
         }
-        service.connectUpdateChannel();
+        scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
         EventBus.getDefault().post(new ConnectionErrorEvent());
     }
 }
