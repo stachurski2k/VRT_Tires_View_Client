@@ -13,14 +13,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainViewActivity extends AppCompatActivity {
 
-    public MainViewActivity() {
-        //
-    }
-
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
-    private ViewPagerAdapter viewPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +20,14 @@ public class MainViewActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager2 = findViewById(R.id.viewpager2);
 
-        viewPagerAdapter = new ViewPagerAdapter(this);
-        viewPager2.setAdapter(viewPagerAdapter);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager2 viewPager = findViewById(R.id.viewpager2);
 
-        new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        viewPager.setAdapter(viewPagerAdapter);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0: tab.setText(R.string.result_menu_tab_name); break;
                 case 1: tab.setText(R.string.advanced_menu_tab_name); break;

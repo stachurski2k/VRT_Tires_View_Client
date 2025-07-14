@@ -36,13 +36,14 @@ class ParameterRepository {
         return tireParametersLiveData;
     }
 
-    void setTireParameters(@NonNull TireParameters tireParameters) {
+    @NonNull
+    CompletableFuture<Void> setTireParameters(@NonNull TireParameters tireParameters) {
         tireParametersLiveData.postValue(tireParameters);
-        sendParameters(tireParameters);
+        return sendParameters(tireParameters);
     }
 
-    private void sendParameters(@NonNull TireParameters tireParameters) {
-        CompletableFuture.runAsync(() -> {
+    private CompletableFuture<Void> sendParameters(@NonNull TireParameters tireParameters) {
+        return CompletableFuture.runAsync(() -> {
             Request request = new Request.Builder()
                     .method("POST", RequestBody.create(gson.toJson(tireParameters).getBytes()))
                     .url("http://" + settingsRepository.getDeviceAddressIp() + ":" + settingsRepository.getDeviceAddressPort() + "/tire-settings")

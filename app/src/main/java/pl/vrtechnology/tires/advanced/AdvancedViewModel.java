@@ -60,8 +60,8 @@ class AdvancedViewModel extends ViewModel {
 
     private void onParameterChange() {
         editedParametersLiveData.postValue(editedParametersLiveData.getValue());
-        if(!Objects.requireNonNull(editedParametersLiveData.getValue()).equals(parameterRepository.getTireParameters().getValue())) {
-            if(!notSubmittedChanges) {
+        if (!Objects.requireNonNull(editedParametersLiveData.getValue()).equals(parameterRepository.getTireParameters().getValue())) {
+            if (!notSubmittedChanges) {
                 showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_unsaved, Alert.Type.INFO, -1));
             }
             notSubmittedChanges = true;
@@ -73,7 +73,13 @@ class AdvancedViewModel extends ViewModel {
 
     void onTireParametersSubmit() {
         notSubmittedChanges = false;
-        parameterRepository.setTireParameters(Objects.requireNonNull(editedParametersLiveData.getValue()).clone());
-        showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_saved, Alert.Type.SUCCESS, 2000));
+        parameterRepository.setTireParameters(Objects.requireNonNull(editedParametersLiveData.getValue()).clone())
+                .exceptionally(throwable -> {
+                    showAlertEventLiveData.postValue(new ShowAlertEvent("NIE UDAŁO SIĘ WYSŁAĆ", Alert.Type.ERROR, 2000));
+                    return null;
+                })
+                .thenRun(() -> {
+                    showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_saved, Alert.Type.SUCCESS, 2000));
+                });
     }
 }

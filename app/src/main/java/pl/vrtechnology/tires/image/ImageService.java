@@ -74,6 +74,9 @@ public class ImageService extends Service {
         imageRequest = new Request.Builder()
                 .url(createUrl("image"))
                 .build();
+        if(sseUpdateClient != null) {
+            sseUpdateClient.connectionPool().evictAll();
+        }
         sseUpdateClient = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(0, TimeUnit.MINUTES)
@@ -112,7 +115,6 @@ public class ImageService extends Service {
     }
 
     synchronized void connectUpdateChannel() {
-        Log.d("ImageService", "connectUpdateChannel");
         if(sseUpdateSource != null) {
             sseUpdateSource.cancel();
         }
