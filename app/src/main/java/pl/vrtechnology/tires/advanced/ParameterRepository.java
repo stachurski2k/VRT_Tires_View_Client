@@ -37,25 +37,26 @@ class ParameterRepository {
     }
 
     @NonNull
-    CompletableFuture<Void> setTireParameters(@NonNull TireParameters tireParameters) {
+    CompletableFuture<Boolean> setTireParameters(@NonNull TireParameters tireParameters) {
         tireParametersLiveData.postValue(tireParameters);
         return sendParameters(tireParameters);
     }
 
-    private CompletableFuture<Void> sendParameters(@NonNull TireParameters tireParameters) {
-        return CompletableFuture.runAsync(() -> {
+    private CompletableFuture<Boolean> sendParameters(@NonNull TireParameters tireParameters) {
+        return CompletableFuture.supplyAsync(() -> {
             Request request = new Request.Builder()
                     .method("POST", RequestBody.create(gson.toJson(tireParameters).getBytes()))
                     .url("http://" + settingsRepository.getDeviceAddressIp() + ":" + settingsRepository.getDeviceAddressPort() + "/tire-settings")
                     .build();
             try (Response response = httpClient.newCall(request).execute()) {
-                if (response.body() == null) {
-                    Log.e("ParameterRepository", "sendParameters: EMPTY");
+                if(response.code() != 200) {
+                    return false;
                 }
-                Log.e("ParameterRepository", "sendParameters: NIE EMPTY");
             } catch (Exception exception) {
                 Log.e("ParameterRepository", "sendParameters: ", exception);
+                return false;
             }
+            return true;
         });
     }
 }

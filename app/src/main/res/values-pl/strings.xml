@@ -27,4 +27,5 @@
     <string name="settings_alert_unsaved">Nie zapisane ustawienia</string>
     <string name="result_alert_connection_success">Połączono.</string>
     <string name="result_alert_connection_error">Błąd połączenia!</string>
+    <string name="advanced_alert_save_failed">Nie udało się zatwierdzić parametrów</string>
 </resources>

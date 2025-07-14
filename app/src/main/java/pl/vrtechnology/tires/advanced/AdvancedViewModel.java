@@ -75,11 +75,15 @@ class AdvancedViewModel extends ViewModel {
         notSubmittedChanges = false;
         parameterRepository.setTireParameters(Objects.requireNonNull(editedParametersLiveData.getValue()).clone())
                 .exceptionally(throwable -> {
-                    showAlertEventLiveData.postValue(new ShowAlertEvent("NIE UDAŁO SIĘ WYSŁAĆ", Alert.Type.ERROR, 2000));
+                    showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_save_failed, Alert.Type.ERROR, 2000));
                     return null;
                 })
-                .thenRun(() -> {
-                    showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_saved, Alert.Type.SUCCESS, 2000));
+                .thenAccept(success -> {
+                    if(success) {
+                        showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_saved, Alert.Type.SUCCESS, 2000));
+                    } else {
+                        showAlertEventLiveData.postValue(new ShowAlertEvent(R.string.advanced_alert_save_failed, Alert.Type.ERROR, 2000));
+                    }
                 });
     }
 }

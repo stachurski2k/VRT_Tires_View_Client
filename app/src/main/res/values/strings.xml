@@ -29,4 +29,5 @@
     <string name="settings_alert_unsaved">Unsaved changes</string>
     <string name="result_alert_connection_success">Connected.</string>
     <string name="result_alert_connection_error">Connection failed!</string>
+    <string name="advanced_alert_save_failed">Failed to submit parameters</string>
 </resources>
