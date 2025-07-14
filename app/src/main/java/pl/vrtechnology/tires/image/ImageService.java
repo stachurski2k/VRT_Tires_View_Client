@@ -115,9 +115,11 @@ public class ImageService extends Service {
     }
 
     synchronized void connectUpdateChannel() {
+        updateListener.setReconnectOnFail(false);
         if(sseUpdateSource != null) {
             sseUpdateSource.cancel();
         }
+        updateListener.setReconnectOnFail(true);
         sseUpdateSource = EventSources.createFactory(sseUpdateClient)
                 .newEventSource(sseUpdateRequest, updateListener);
     }

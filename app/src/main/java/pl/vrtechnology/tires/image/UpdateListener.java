@@ -5,11 +5,12 @@ import androidx.annotation.Nullable;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.net.SocketException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import lombok.Getter;
+import lombok.Setter;
 import okhttp3.Response;
 import okhttp3.sse.EventSource;
 import okhttp3.sse.EventSourceListener;
@@ -18,6 +19,9 @@ class UpdateListener extends EventSourceListener {
 
     private final ImageService service;
     private final ScheduledExecutorService scheduler;
+    @Getter
+    @Setter
+    private boolean reconnectOnFail = false;
 
     public UpdateListener(ImageService service) {
         super();
@@ -42,10 +46,10 @@ class UpdateListener extends EventSourceListener {
 
     @Override
     public void onFailure(@NonNull EventSource eventSource, @Nullable Throwable t, @Nullable Response response) {
-        if (t instanceof SocketException && t.getMessage() != null && t.getMessage().contains("Socket closed")) {
-            return;
-        }
-        scheduler.schedule(service::connectUpdateChannel, 5, TimeUnit.SECONDS);
         EventBus.getDefault().post(new ConnectionErrorEvent());
+        if(reconnectOnFail) {
+            //scheduler.schedule(service::connectUpdateChannel, 1, TimeUnit.SECONDS);
+            service.connectUpdateChannel();
+        }
     }
 }
