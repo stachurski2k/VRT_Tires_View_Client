@@ -19,7 +19,7 @@
 
         <service android:name="pl.vrtechnology.tires.image.ImageService" />
 
-        <activity android:exported="true" android:name="pl.vrtechnology.tires.MainViewActivity" android:screenOrientation="landscape">
+        <activity android:exported="true" android:name="pl.vrtechnology.tires.MainViewActivity" android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
