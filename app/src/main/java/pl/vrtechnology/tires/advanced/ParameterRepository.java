@@ -16,18 +16,25 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import pl.vrtechnology.tires.settings.Configuration;
 import pl.vrtechnology.tires.settings.SettingsRepository;
 
 class ParameterRepository {
 
     private final Gson gson = new Gson();
     private final SettingsRepository settingsRepository;
-    private final MutableLiveData<TireParameters> tireParametersLiveData = new MutableLiveData<>(new TireParameters(135, 30, 12));
+    private final MutableLiveData<TireParameters> tireParametersLiveData;
     private final OkHttpClient httpClient;
 
     @Inject
     ParameterRepository(@NonNull SettingsRepository settingsRepository) {
         this.settingsRepository = settingsRepository;
+        Configuration config = settingsRepository.getConfiguration();
+        this.tireParametersLiveData = new MutableLiveData<>(new TireParameters(
+                config.getMinTireWidth(),
+                config.getMinTireProfile(),
+                config.getMinTireDiameter()
+        ));
         httpClient = new OkHttpClient();
     }
 
