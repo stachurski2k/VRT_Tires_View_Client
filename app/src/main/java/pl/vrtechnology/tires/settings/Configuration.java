@@ -1,10 +1,11 @@
 package pl.vrtechnology.tires.settings;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PACKAGE)
 public class Configuration {
 
     private String deviceIp = "172.20.0.226";

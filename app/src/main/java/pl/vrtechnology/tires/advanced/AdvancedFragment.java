@@ -18,6 +18,7 @@ import com.google.android.material.slider.Slider;
 import dagger.hilt.android.AndroidEntryPoint;
 import pl.vrtechnology.tires.R;
 import pl.vrtechnology.tires.alert.Alert;
+import pl.vrtechnology.tires.settings.Configuration;
 
 @AndroidEntryPoint
 public class AdvancedFragment extends Fragment {
@@ -31,25 +32,33 @@ public class AdvancedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         AdvancedViewModel viewModel = new ViewModelProvider(this).get(AdvancedViewModel.class);
+        Configuration config = viewModel.getConfig();
 
         // tire width
         Slider tireWidthSlider = view.findViewById(R.id.advanced_slider_tire_width);
-        tireWidthSlider.setValue(viewModel.getTireParameters().getValue().getWidth());
-        tireWidthSlider.addOnChangeListener((slider, value, fromUser) -> viewModel.onTireWidthChange(value));
+        TextView minWidthTextView = view.findViewById(R.id.advanced_tire_width_min_text_view);
+        TextView maxWidthTextView = view.findViewById(R.id.advanced_tire_width_max_text_view);
+        float initialWidth = viewModel.getTireParameters().getValue().getWidth();
+        setupSlider(tireWidthSlider, minWidthTextView, maxWidthTextView, config.getMinTireWidth(), config.getMaxTireWidth(), initialWidth, (slider, value, fromUser) -> viewModel.onTireWidthChange(value));
 
         // tire profile
-        Slider tireDiameterSlider = view.findViewById(R.id.advanced_slider_tire_diameter);
-        tireDiameterSlider.setValue(viewModel.getTireParameters().getValue().getDiameter());
-        tireDiameterSlider.addOnChangeListener((slider, value, fromUser) -> viewModel.onTireDiameterChange(value));
+        Slider tireProfileSlider = view.findViewById(R.id.advanced_slider_tire_profile);
+        TextView minProfileTextView = view.findViewById(R.id.advanced_tire_profile_min_text_view);
+        TextView maxProfileTextView = view.findViewById(R.id.advanced_tire_profile_max_text_view);
+        float initialProfile = viewModel.getTireParameters().getValue().getProfile();
+        setupSlider(tireProfileSlider, minProfileTextView, maxProfileTextView, config.getMinTireProfile(), config.getMaxTireProfile(), initialProfile, (slider, value, fromUser) -> viewModel.onTireProfileChange(value));
 
         // tire diameter
-        Slider tireProfileSlider = view.findViewById(R.id.advanced_slider_tire_profile);
-        tireProfileSlider.setValue(viewModel.getTireParameters().getValue().getProfile());
-        tireProfileSlider.addOnChangeListener((slider, value, fromUser) -> viewModel.onTireProfileChange(value));
+        Slider tireDiameterSlider = view.findViewById(R.id.advanced_slider_tire_diameter);
+        TextView minDiameterTextView = view.findViewById(R.id.advanced_tire_diameter_min_text_view);
+        TextView maxDiameterTextView = view.findViewById(R.id.advanced_tire_diameter_max_text_view);
+        float initialDiameter = viewModel.getTireParameters().getValue().getDiameter();
+        setupSlider(tireDiameterSlider, minDiameterTextView, maxDiameterTextView, config.getMinTireDiameter(), config.getMaxTireDiameter(), initialDiameter, (slider, value, fromUser) -> viewModel.onTireDiameterChange(value));
 
+        // Observer for updated tire parameters
         TextView tireWidthTextView = view.findViewById(R.id.tire_width_setting_text_view);
-        TextView tireDiameterTextView = view.findViewById(R.id.tire_profile_setting_text_view);
-        TextView tireProfileTextView = view.findViewById(R.id.tire_diameter_setting_text_view);
+        TextView tireProfileTextView = view.findViewById(R.id.tire_profile_setting_text_view);
+        TextView tireDiameterTextView = view.findViewById(R.id.tire_diameter_setting_text_view);
 
         viewModel.getEditedTireParameters().observe(getViewLifecycleOwner(), tireParameters -> {
             if (tireParameters != null) {
@@ -70,5 +79,15 @@ public class AdvancedFragment extends Fragment {
                 alert.show(event.getText(requireContext()), event.getType(), event.getDuration());
             }
         });
+    }
+
+    // Helper method to set up the sliders
+    private void setupSlider(Slider slider, TextView minTextView, TextView maxTextView, int min, int max, float currentValue, Slider.OnChangeListener listener) {
+        minTextView.setText(String.valueOf(min));
+        maxTextView.setText(String.valueOf(max));
+        slider.setValueFrom(min);
+        slider.setValueTo(max);
+        slider.setValue(currentValue);
+        slider.addOnChangeListener(listener);
     }
 }

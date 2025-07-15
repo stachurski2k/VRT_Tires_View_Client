@@ -1,7 +1,6 @@
 package pl.vrtechnology.tires.settings;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -10,9 +9,7 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +19,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 
 import dagger.hilt.android.qualifiers.ApplicationContext;
+import lombok.Getter;
 import pl.vrtechnology.tires.R;
 
 public class SettingsRepository {
@@ -30,6 +28,7 @@ public class SettingsRepository {
 
     private final Gson gson = new Gson();
     private final Context context;
+    @Getter
     private Configuration configuration;
 
     @Inject

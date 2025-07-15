@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -13,19 +16,28 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import pl.vrtechnology.tires.R;
 import pl.vrtechnology.tires.alert.Alert;
 import pl.vrtechnology.tires.alert.ShowAlertEvent;
+import pl.vrtechnology.tires.settings.Configuration;
+import pl.vrtechnology.tires.settings.SettingsRepository;
 
 @HiltViewModel
 class AdvancedViewModel extends ViewModel {
 
+    private final SettingsRepository settingsRepository;
     private final ParameterRepository parameterRepository;
     private final MutableLiveData<ShowAlertEvent> showAlertEventLiveData = new MutableLiveData<>();
     private final MutableLiveData<TireParameters> editedParametersLiveData;
     private boolean notSubmittedChanges = false;
 
     @Inject
-    AdvancedViewModel(@NonNull ParameterRepository parameterRepository) {
+    AdvancedViewModel(@NonNull SettingsRepository settingsRepository, @NonNull ParameterRepository parameterRepository) {
+        this.settingsRepository = settingsRepository;
         this.parameterRepository = parameterRepository;
         this.editedParametersLiveData = new MutableLiveData<>(Objects.requireNonNull(parameterRepository.getTireParameters().getValue()).clone());
+        //EventBus.getDefault().register(this);
+    }
+
+    Configuration getConfig() {
+        return settingsRepository.getConfiguration();
     }
 
     @NonNull
