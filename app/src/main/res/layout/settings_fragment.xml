@@ -50,6 +50,7 @@
             android:ems="10"
             android:textSize="20sp"
             android:inputType="text"
+            android:textAlignment="center"
             android:hint="@string/settings_ip_hint" />
 
         <TextView
@@ -66,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:autofillHints=""
+            android:textAlignment="center"
             android:ems="10"
             android:inputType="number"
             android:hint="@string/settings_port_hint"/>

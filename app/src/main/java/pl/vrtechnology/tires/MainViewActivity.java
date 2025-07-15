@@ -1,6 +1,8 @@
 package pl.vrtechnology.tires;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -19,6 +21,12 @@ public class MainViewActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View decorView = getWindow().getDecorView();
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            decorView.setSystemUiVisibility(uiOptions);
         }
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
