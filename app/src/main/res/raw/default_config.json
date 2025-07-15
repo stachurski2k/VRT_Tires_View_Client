@@ -1,0 +1,10 @@
+{
+  "deviceIp": "172.20.0.226",
+  "devicePort": 8080,
+  "minTireWidth": 135,
+  "maxTireWidth": 355,
+  "minTireProfile": 30,
+  "maxTireProfile": 85,
+  "minTireDiameter": 12,
+  "maxTireDiameter": 24
+}
