@@ -23,8 +23,8 @@
     <string name="advanced_submit">Zatwierdź</string>
     <string name="settings_alert_saved">Zapisano ustawienia</string>
     <string name="advanced_alert_saved">Zatwierdzono parametry opony</string>
-    <string name="advanced_alert_unsaved">Nie zatwierdzone parametry</string>
-    <string name="settings_alert_unsaved">Nie zapisane ustawienia</string>
+    <string name="advanced_alert_unsaved">Niezatwierdzone parametry</string>
+    <string name="settings_alert_unsaved">Niezapisane ustawienia</string>
     <string name="result_alert_connection_success">Połączono.</string>
     <string name="result_alert_connection_error">Błąd połączenia!</string>
     <string name="advanced_alert_save_failed">Nie udało się zatwierdzić parametrów</string>
